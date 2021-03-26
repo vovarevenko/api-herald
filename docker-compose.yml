@@ -1,0 +1,15 @@
+version: "3"
+
+volumes:
+  node-modules:
+
+services:
+  app:
+    build: .
+    command: yarn dev
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT}:${HTTP_PORT}"
+    volumes:
+      - .:/usr/src/app
+      - node-modules:/usr/src/app/node_modules
