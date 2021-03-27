@@ -5,27 +5,38 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import yaml from 'js-yaml'
 
-const url = 'https://api.telegram.org'
+const apiUrl = 'https://api.telegram.org'
+
+const { port } = cfg.http
+const { token } = cfg.telegram.bot
 
 const app = new Koa()
 
 app.use(bodyParser())
 
 interface RequestData {
-  title: string
-  time: string
-  data: string
+  msg?: string
+  data?: Record<string, unknown>
 }
 
 app.use(async ctx => {
   if (ctx.method === 'POST') {
-    const { title, time, data } = ctx.request.body as RequestData
-    const dumpedData = yaml.dump(data)
-    const uri = `${url}/bot${cfg.telegram.bot.token}/sendMessage?parse_mode=html`
-    const text = `<b>${title}</b>\n<i>${time}</i>\n\n<code>${dumpedData}</code>`
+    const { msg, data } = ctx.request.body as RequestData
+
+    let text = ''
+
+    if (msg && data) {
+      text += `${msg}\n\n${yaml.dump(data)}`
+    } else {
+      if (msg) text += msg
+      if (data) text += yaml.dump(data)
+    }
+
+    const url = `${apiUrl}/bot${token}/sendMessage?parse_mode=html`
+    const payload = { chat_id: 34897485, text }
 
     try {
-      await axios.post(uri, { chat_id: 34897485, text })
+      await axios.post(url, payload)
       ctx.res.statusCode = 204
     } catch (err) {
       console.error(err)
@@ -34,6 +45,6 @@ app.use(async ctx => {
   }
 })
 
-app.listen(cfg.http.port)
+app.listen(port)
 
-console.log(`HTTP server is up on port ${cfg.http.port}`)
+console.log(`HTTP server is up on port ${port}`)
