@@ -15,7 +15,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsnd --respawn --rs src/index.ts",
-    "lint": "eslint --fix --ext .js,.ts ."
+    "lint": "eslint --fix --ext .js,.ts .",
+    "start": "yarn build && node dist/index.js"
   },
   "dependencies": {
     "axios": "^0.21.1",

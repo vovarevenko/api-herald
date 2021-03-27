@@ -6,7 +6,7 @@ volumes:
 services:
   app:
     build: .
-    command: yarn dev
+    command: "${DOCKER_COMMAND}"
     restart: unless-stopped
     ports:
       - "${HTTP_PORT}:${HTTP_PORT}"
