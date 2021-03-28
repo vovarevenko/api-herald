@@ -8,8 +8,7 @@ import yaml from 'js-yaml'
 const apiUrl = 'https://api.telegram.org'
 
 const { port } = cfg.http
-const { token } = cfg.telegram.bot
-const { chatId } = cfg.telegram
+const { botToken, chatId } = cfg.telegram
 
 const app = new Koa()
 
@@ -33,7 +32,7 @@ app.use(async ctx => {
       if (data) text += yaml.dump(data)
     }
 
-    const url = `${apiUrl}/bot${token}/sendMessage?parse_mode=html`
+    const url = `${apiUrl}/bot${botToken}/sendMessage?parse_mode=html`
     const payload = { chat_id: chatId, text }
 
     try {
