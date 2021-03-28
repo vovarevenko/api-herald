@@ -12,4 +12,5 @@ export const telegram = {
   bot: {
     token: data.TELEGRAM_BOT_TOKEN ?? '',
   },
+  chatId: Number(data.TELEGRAM_CHAT_ID),
 }

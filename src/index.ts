@@ -9,6 +9,7 @@ const apiUrl = 'https://api.telegram.org'
 
 const { port } = cfg.http
 const { token } = cfg.telegram.bot
+const { chatId } = cfg.telegram
 
 const app = new Koa()
 
@@ -33,7 +34,7 @@ app.use(async ctx => {
     }
 
     const url = `${apiUrl}/bot${token}/sendMessage?parse_mode=html`
-    const payload = { chat_id: 34897485, text }
+    const payload = { chat_id: chatId, text }
 
     try {
       await axios.post(url, payload)
